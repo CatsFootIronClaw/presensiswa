@@ -34,11 +34,16 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/', [AuthController::class, 'login']);
 });
 
+
+
 Route::get('/home', function () {
-    return redirect('dashboard');
-});
+            return redirect('dashboard/walikelas');
+        });
+
+
 
     Route::middleware(['auth'])->group(function () {
+    
 
         //Routes Walikelas
         Route::prefix('dashboard')->middleware(['akses:walikelas'])->group(function () {
@@ -74,6 +79,7 @@ Route::get('/home', function () {
                     Route::post('/edit/simpan', [WaliKelasController::class, 'updatePresensi']);
                     Route::get('/detail/{id}', [WaliKelasController::class, 'detailPresensi']);
                     Route::get('/unduh', [WaliKelasController::class, 'unduhPresensi']);
+                    Route::delete('/hapus', [WaliKelasController::class, 'destroyPresensi']);   
                 });
                 
             });

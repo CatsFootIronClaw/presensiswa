@@ -20,6 +20,7 @@
                                 <div class="form-group">
                                     <label>Kelas</label>
                                     <select name="id_kelas" class="form-control">
+                                        <option value="" hidden> -- pilih kelas --</option>
                                         @foreach ($kelas as $k)
                                         <option value="{{ $k->id_kelas }}" selected>
                                             {{ $k->nama_kelas }}
@@ -33,6 +34,7 @@
                                 <br>
                                 <label>Jenis Kelamin</label>
                                 <select class="form-select" name="jenis_kelamin" aria-label="Default select example">
+                                    <option value="" hidden> -- pilih Jenis Kelamin --</option>
                                     <option selected value="">Pilih Jenis kelamin</option>
                                     <option value="laki-laki">laki-laki</option>
                                     <option value="perempuan">perempuan</option>

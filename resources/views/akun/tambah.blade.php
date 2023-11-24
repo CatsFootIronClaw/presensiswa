@@ -25,6 +25,7 @@
                                 <input type="text" class="form-control" name="password" />
                                 <label>Role</label>
                                 <select name="role" class="form-control">
+                                    <option value="" hidden> -- pilih role --</option>
                                     <option disabled selected>Pilih Role</option>
                                     <option value="tatausaha">Tata Usaha</option>
                                     <option value="walikelas">Wali Kelas</option>

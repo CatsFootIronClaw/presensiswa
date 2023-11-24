@@ -99,7 +99,11 @@ class DashboardController extends Controller
             ];
         }
         
+        if(Auth::check() && Auth::user()->role != 'tatausaha'){
         return view('dashboard.index', $data, $data2);
+        } else {
+            return view('dashboard.index', $data);
+        }
     }
     
 }

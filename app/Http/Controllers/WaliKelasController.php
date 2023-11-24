@@ -221,9 +221,9 @@ class WaliKelasController extends Controller
 
         $data = $request->validate(
             [
-                'nama_siswa' => 'sometimes',
-                'jenis_kelamin' => 'sometimes',
-                // 'id_kelas' => 'sometimes',
+                'nama_siswa' => 'required',
+                'jenis_kelamin' => 'required',
+                // 'id_kelas' => 'required',
                 'foto_siswa' => 'sometimes|file'
             ]
         );
@@ -296,6 +296,25 @@ class WaliKelasController extends Controller
                 return back()->with('error', 'Data gagal diupdate');
             }
         }
+    }
+
+    public function destroyPresensi(Request $request, PresensiSiswa $presensi)
+    {
+        $id_presensi = $request->input('id_presensi');
+        $hapusPresensi = $presensi->where('id_presensi', $id_presensi)->delete();
+        if ($hapusPresensi) {
+            $pesan = [
+                'success' => true,
+                'pesan' => 'Data berhasil di hapus'
+            ];
+        } else {
+            $pesan = [
+                'success' => false,
+                'pesan' => 'Data gagal di hapus'
+            ];
+        }
+
+        return response()->json($pesan);
     }
 
     public function detailPresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)

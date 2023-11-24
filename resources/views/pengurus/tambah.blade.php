@@ -35,6 +35,7 @@
                             <div class="form-group">
                                 <label>Siswa</label>
                                 <select name="nis" class="form-control">
+                                    <option value="" hidden> -- pilih siswa --</option>
                                     @foreach ($siswa as $s)
                                     <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
                                     </option>
@@ -43,7 +44,7 @@
                                 <br>
                                 <label>Jabatan</label>
                                 <select name="jabatan" class="form-control">
-                                    <option value="default" hidden>pilih jabatan</option>
+                                    <option value="" hidden> -- pilih jabatan --</option>
                                     <option value="Ketua kelas">Ketua kelas</option>
                                     <option value="Wakil kelas">Wakil kelas</option>
                                     <option value="Sekretaris">Sekretaris</option>

@@ -14,12 +14,12 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="nis">NIS</label>
-                                <input type="text" class="form-control" name="nis" value="{{ $siswa->nis }}" id="nis">
+                                <input type="text" class="form-control" name="nis" value="{{ $siswa->nis }}" id="nis" required>
                             </div>
                             @if (Auth::check() && Auth::user()->role == 'tatausaha')
                             <div class="form-group">
                                 <label for="id_kelas">Kelas</label>
-                                <select name="id_kelas" class="form-control" id="id_kelas">
+                                <select name="id_kelas" class="form-control" id="id_kelas" required>
                                     @foreach ($kelas as $i)
                                     <option value="{{ $i->id_kelas }}">
                                         {{ $i->nama_kelas }}
@@ -30,13 +30,14 @@
                             @endif
                             <br>
                             <div class="form-group">
-                                <label for="nama_siswa">Nama Siswa</label>
-                                <input type="text" class="form-control" name="nama_siswa" value="{{ $siswa->nama_siswa }}" id="nama_siswa">
+                                <label for="nama_siswa" class="form-label">Nama Siswa</label>
+                                <input type="text" class="form-control" name="nama_siswa" value="{{ $siswa->nama_siswa }}" id="nama_siswa" required>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
+                                <select name="jenis_kelamin" class="form-control" id="jenis_kelamin" required>
+                                    
                                     <option value="laki-laki" {{ $siswa->jenis_kelamin === 'laki-laki' ? 'selected' : '' }}>
                                         laki-laki
                                     </option>
@@ -48,7 +49,7 @@
                             <br>
                             <div class="form-group">
                                 <label for="foto_siswa">Foto Siswa</label>
-                                <input type="file" class="form-control" name="foto_siswa" id="foto_siswa">
+                                <input type="file" class="form-control" name="foto_siswa" id="foto_siswa" value="{{ $siswa->foto_siswa }}" required>
                             </div>
                         </div>
                     </div>
