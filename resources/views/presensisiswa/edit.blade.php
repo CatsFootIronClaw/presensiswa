@@ -5,6 +5,21 @@
     body {
         background-color: #98E4FF;
     }
+
+    .card-header .h1 {
+        font-weight: 600;
+        opacity: 60%;
+    }
+
+    .form-control {
+        opacity: 80%;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: 700;
+        font-size: medium;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -32,9 +47,10 @@
                                 <input type="file" class="form-control" name="foto_bukti" />
                                 @csrf
                             </div>
-                            <div class="col-md-5 mt-3">
-                                <button type="submit" class="btn btn-primary">SIMPAN</button>
-                                <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                            <div class="col-md-5 mt-3 d-flex">
+                                <button type="submit" class="btn btn-sm button btnSimpan">SIMPAN</button>
+                                <span style="width: 10px;"></span>
+                                <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail ">KEMBALI</a>
                             </div>
                         </div>
                     </div>

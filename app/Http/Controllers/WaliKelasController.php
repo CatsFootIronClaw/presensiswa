@@ -20,13 +20,17 @@ class WaliKelasController extends Controller
     public function profilWalas(Tbl_user $tbl_user)
     {
         $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
 
         $data = [
             'akun' => $tbl_user
                 ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
                 ->join('wali_kelas', 'guru.id_guru', '=', 'wali_kelas.id_guru')
                 ->join('kelas', 'wali_kelas.id_walas', '=', 'kelas.id_walas')
-                ->where('guru.id_user', $auth->id_user)->get()
+                ->where('guru.id_user', $auth->id_user)->get(),
+            'foto_profil' => $fotoprofil[0]
                 
         ];
         return view('profil.profilguru', $data);
@@ -35,24 +39,25 @@ class WaliKelasController extends Controller
     public function indexSiswa(tbl_user $tbl_user, Siswa $siswa)
     {
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $auth = Auth::user()->id_user;
         // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
-        if (Auth::check() && Auth::user()->role == 'tatausaha') {
-            $tampilkan_siswa = DB::table('view_siswa')
-                ->get();
-        } else {
+
             $tampilkan_siswa = DB::table('view_siswa')
                 ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
                 ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
                 ->where('guru.id_user', $auth)
                 ->get();
-        }
         // array untuk menangkap data siswa dari view dan 
         // menangkap data jumlah siswa dari stored function
         $data = [
 
             'siswa' => $tampilkan_siswa,
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);
@@ -61,11 +66,16 @@ class WaliKelasController extends Controller
         return view('siswa.index', $data);
     }
 
-    public function detailSiswa(Request $request, Siswa $siswa)
+    public function detailSiswa(Request $request, Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'detail' => $siswa->where('nis', $request->id)
-                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('siswa.detail', $data);
@@ -73,28 +83,28 @@ class WaliKelasController extends Controller
 
 
     //============================================================================
-    public function indexKelas(Kelas $kelas)
+    public function indexKelas(Kelas $kelas, tbl_user $tbl_user)
     {
         $tampilkan_kelas = DB::select(' SELECT * from view_Kelas');
-        // $totalkelas = DB::select('SELECT Countkelas() AS Totalkelas');
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
 
-        // array untuk menangkap data kelas dari view dan 
-        // menangkap data jumlah kelas dari stored function
         $data = [
             'kelas' => $tampilkan_kelas,
-            // 'siswa' => $siswa->all(),
+            'foto_profil' => $fotoprofil[0]
         ];
 
-        // $data = [
-        //     'kelas' => $kelas->all(),
-        // ];
-
-        // dd($data);
         return view('kelas.index', $data);
     }
 
-    public function detailKelas(Request $request, Kelas $kelas)
+    public function detailKelas(Request $request, Kelas $kelas, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $detailkelas = DB::table('view_kelas')->where('id_kelas', $request->id)->get();
         $jumlahsiswa = DB::table('kelas')->select(DB::raw('COUNT(*) as JumlahSiswa'))
         ->join('siswa', 'siswa.id_kelas', '=', 'kelas.id_kelas')
@@ -102,7 +112,8 @@ class WaliKelasController extends Controller
         $data = [
             'detail' => $detailkelas,
                 // ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
-            'jumlahsiswa' => $jumlahsiswa[0]->JumlahSiswa
+            'jumlahsiswa' => $jumlahsiswa[0]->JumlahSiswa,
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('Kelas.detail', $data);
@@ -110,9 +121,12 @@ class WaliKelasController extends Controller
     //================================================================
 
 
-    public function indexPresensiSiswa(PresensiSiswa $presensi)
+    public function indexPresensiSiswa(PresensiSiswa $presensi, tbl_user $tbl_user)
     {
         $auth = Auth::user()->id_user;
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth)->get();
         $tampilkan_presensi = $presensi
             ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
             ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
@@ -124,7 +138,8 @@ class WaliKelasController extends Controller
         // ->get();
 
         $data = [
-            'presensi' => $tampilkan_presensi
+            'presensi' => $tampilkan_presensi,
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);
@@ -132,13 +147,66 @@ class WaliKelasController extends Controller
         return view('presensisiswa.index', $data);
     }
 
-    public function editSiswa(Request $request, Siswa $siswa, Kelas $kelas)
+    public function createPresensi(Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
+
+        $tampilkan_siswa =
+        DB::table('view_siswa')
+        ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+        ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+        ->where('guru.id_user', $auth->id_user)
+        ->get();
+
+        $data = [
+            'foto_profil' => $fotoprofil[0],
+            'siswa' => $tampilkan_siswa
+        ];
+        return view('presensisiswa.tambah', $data);
+    }
+
+    public function storePresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
+    {
+        $data = $request->validate([
+            'nis' => 'required',
+            'status_hadir' => 'required',
+            'foto_bukti' => 'required',
+        ]);
+        if ($request->hasFile('foto_bukti') && $request->file('foto_bukti')->isValid()) {
+            $foto_file = $request->file('foto_bukti');
+            $foto_nama = md5($foto_file->getClientOriginalName() . time()) . '.' . $foto_file->getClientOriginalExtension();
+            $foto_file->move(public_path('foto'), $foto_nama);
+            $data['foto_bukti'] = $foto_nama;
+        } else {
+            return back()->with('error', 'File upload failed. Please select a valid file.');
+        }
+
+        $user = Auth::user();
+        $data['pembuat'] = $user->role;
+
+        $store = DB::statement("CALL CreatePresensi(?,?,?)", [$data['nis'], $data['status_hadir'], $data['foto_bukti']]);
+        if ($store) {
+            return redirect('dashboard/walikelas/presensi');
+        } else {
+            return back()->with('error', 'Data presensi gagal ditambahkan');
+        }
+    }
+
+    public function editSiswa(Request $request, Siswa $siswa, Kelas $kelas, tbl_user $tbl_user)
+    {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             "siswa" => $siswa->where('nis', $request->id)->first(),
             "kelas" => $kelas
                 ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
-                ->get()
+                ->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('siswa.edit', $data);
@@ -182,11 +250,16 @@ class WaliKelasController extends Controller
         }
     }
 
-    public function editPresensi(Request $request, PresensiSiswa $presensi)
+    public function editPresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'presensi' => $presensi->where('id_presensi', $request->id)
-                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')->get()
+                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('presensisiswa.edit', $data);
@@ -225,21 +298,29 @@ class WaliKelasController extends Controller
         }
     }
 
-    public function detailPresensi(Request $request, PresensiSiswa $presensi)
+    public function detailPresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'detail' => $presensi->where('id_presensi', $request->id)
                 ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
-                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('presensisiswa.detail', $data);
     }
 
 
-    public function indexPengurus(PengurusKelas $pengurus)
+    public function indexPengurus(PengurusKelas $pengurus, tbl_user $tbl_user)
     {
         $auth = Auth::user()->id_user;
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth)->get();
         $tampilkan_pengurus = DB::select(' SELECT * from view_pengurus');
         $tampilkan_pengurus = $pengurus
         ->join('siswa', 'siswa.nis', '=', 'pengurus_kelas.nis')
@@ -250,7 +331,8 @@ class WaliKelasController extends Controller
 
 
         $data = [
-            'pengurus' => $tampilkan_pengurus
+            'pengurus' => $tampilkan_pengurus,
+            'foto_profil' => $fotoprofil[0]
         ];
         return view('pengurus.index', $data);
     }
@@ -265,9 +347,12 @@ class WaliKelasController extends Controller
         ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
         ->where('guru.id_user', $auth)
         ->get();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth)->get();
 
         // dd($tampilkan_pengurus);
-        return view("pengurus.tambah", ["siswa" => $tampilkan_siswa]);
+        return view("pengurus.tambah", ["siswa" => $tampilkan_siswa, "foto_profil" => $fotoprofil[0]]);
     }
 
 
@@ -287,29 +372,26 @@ class WaliKelasController extends Controller
                 ->where('siswa.nis', $siswaId)
                 ->update(['tbl_user.role' => 'pengurus']);
 
-            return redirect('dashboard/walikelas/pengurus');
+            return redirect('dashboard/walikelas/pengurus')->with('success', 'Data Pengurus baru berhasil ditambah');
         } else {
             return back()->with('error', 'Data pengurus gagal ditambahkan');
         }
     }
 
 
-    public function editPengurus(Request $request, Siswa $siswa, PengurusKelas $pengurusKelas)
+    public function editPengurus(Request $request, Siswa $siswa, PengurusKelas $pengurusKelas, tbl_user $tbl_user)
     {
-        // $data = [
-        //     // "siswa" => $siswa->where('nis', $request->id)->get(),
-        //     // "jabatan" =>
-        //     "pengurus" => 
-        //         $pengurusKelas->
-        //         join
-        //         // ->where('nis', $request->id)->first()
-        // ];
 
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             "pengurus" => $pengurusKelas
                 ->join('siswa', 'pengurus_kelas.nis', '=', 'siswa.nis')
                 ->where('id_pengurus', '=', $request->id)
-                ->first()
+                ->first(),
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);

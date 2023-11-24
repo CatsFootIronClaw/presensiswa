@@ -34,8 +34,8 @@
                                             <td>: {{$detail[0]->nama_jurusan}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bolder">Tahun Masuk & Tahun Keluar</td>
-                                            <td>: {{$detail[0]->tahun_masuk}} - {{$detail[0]->tahun_keluar}}</td>
+                                            <td class="fw-bolder">Tahun Masuk</td>
+                                            <td>: {{$detail[0]->tahun_masuk}}</td>
                                         </tr>
                                         <tr>
                                             <td class="fw-bolder">Wali Kelas</td>
@@ -49,7 +49,7 @@
                                     </tbody>
                                 </table>
                                 <div class="col-md-4 mt-3">
-                                    <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                                    <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail">KEMBALI</a>
                                 </div>
                             </div>
 

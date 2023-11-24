@@ -8,7 +8,7 @@ use App\Models\Siswa;
 use App\Models\tbl_user;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -355,7 +355,7 @@ class TataUsahaController extends Controller
             try {
                 $dataUpdate = $akun->where('id_user', $id_user)->update($data);
                 DB::commit();
-                return redirect('dashboard/akun')->with('success', 'Data user berhasil di update');
+                return redirect('dashboard/tatausaha/akun')->with('success', 'Data user berhasil di update');
             } catch (Exception $e) {
                 DB::rollBack();
                 dd($e->getMessage());
@@ -391,9 +391,9 @@ class TataUsahaController extends Controller
     {
         $totalGuru = DB::select('SELECT CountTotalDataGuru() AS totalGuru')[0]->totalGuru;
 
-        $guru = DB::table('view_guru')->get();
+        $guru = $guru->all();
         $data = [
-            'user' => $guru,
+            'guru' => $guru,
             'jumlahGuru' => $totalGuru
         ];
         // dd($data);
@@ -411,7 +411,7 @@ class TataUsahaController extends Controller
         ]);
     }
 
-    public function storeGuru(Request $request, Guru $guru)
+    public function storeGuru(Request $request, Guru $guru, tbl_user $tbl_user)
     {
         $data = $request->validate([
             'id_user' => 'required',
@@ -426,8 +426,11 @@ class TataUsahaController extends Controller
             $data['foto_guru'] = $foto_nama;
         }
 
+        // dd($data);
+
         // Proses Insert
         if ($guru->create($data)) {
+
             return redirect('dashboard/tatausaha/guru')->with('success', 'Data Guru baru berhasil ditambah');
         }
 
@@ -454,4 +457,94 @@ class TataUsahaController extends Controller
 
         return response()->json(['success' => true, 'pesan' => 'Data berhasil dihapus']);
     }
+
+    public function editGuru(string $id, tbl_user $akun, Guru $guru)
+    {
+        $data = [
+            'guru' =>  $guru->where('id_guru', $id)->first()
+        ];
+
+        return view('guru.edit', $data);
+    }
+
+    public function updateGuru(Request $request, Kelas $kelas, Guru $guru)
+    {
+        $selectedId = $request->input('id_guru');
+
+        $data = $request->validate([
+            'nama_guru' => 'sometimes',
+            'id_guru' => 'sometimes',
+            'foto_guru' => 'sometimes|file',
+        ]);
+
+        if ($selectedId !== null) {
+
+            if ($request->hasFile('foto_guru') && $request->file('foto_guru')->isValid()) {
+                $foto_file = $request->file('foto_guru');
+                $foto_extension = $foto_file->getClientOriginalExtension();
+                $foto_nama = md5($foto_file->getClientOriginalName() . time()) . '.' . $foto_extension;
+                $foto_file->move(public_path('foto'), $foto_nama);
+
+                $update_data = Guru::where('id_guru', $selectedId)->first();
+                File::delete(public_path('foto') . '/' . $update_data->file);
+
+                $data['foto_guru'] = $foto_nama;
+            }
+
+                $guruUpdate = $guru->where('id_guru', $selectedId)->first()->update($data);
+
+              
+
+                if ($guruUpdate) {
+                    return redirect('dashboard/tatausaha/guru')->with('success', 'Data Guru berhasil diupdate');
+                } else {
+                    return back()->with('error', 'Data Kelas gagal diupdate');
+                }
+            }
+        }
+
+    public function indexSiswa(tbl_user $tbl_user, Siswa $siswa)
+    {
+        $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
+        $auth = Auth::user()->id_user;
+        // $tampilkan_siswa = DB::select(' SELECT * from view_siswa');
+        if (Auth::check() && Auth::user()->role == 'tatausaha') {
+            $tampilkan_siswa = DB::table('view_siswa')
+            ->get();
+        } else {
+            $tampilkan_siswa = DB::table('view_siswa')
+            ->join('kelas', 'view_siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->join('guru', 'guru.id_guru', '=', 'kelas.id_walas')
+            ->where('guru.id_user', $auth)
+            ->get();
+        }
+        // array untuk menangkap data siswa dari view dan 
+        // menangkap data jumlah siswa dari stored function
+        $data = [
+
+            'siswa' => $tampilkan_siswa,
+            'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
+
+        ];
+
+        // dd($data);
+
+
+        return view('siswa.index', $data);
+    }
+
+    public function editSiswa(Request $request, Siswa $siswa, Kelas $kelas, tbl_user $tbl_user)
+    {
+        $data = [
+            "siswa" => $siswa->where('nis', $request->id)->first(),
+            "kelas" => $kelas
+                ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id_jurusan')
+                ->get(),
+        ];
+        // dd($data);
+        return view('siswa.edit', $data);
+    }
+
+
 }
+

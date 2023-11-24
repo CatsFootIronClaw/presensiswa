@@ -49,7 +49,7 @@
         }
 
         .bootstrap-table {
-            margin-top: 60px;
+            margin-top: 10px;
             width: 100%;
             margin-bottom: 1rem;
         }
@@ -137,6 +137,16 @@
             background-color: #a62a1f;
         }
 
+        .btnSimpan {
+            background-color: #333BCC;
+            color: white;
+        }
+
+        .btnSimpan:hover {
+            background-color: #2128A6;
+            color: white !important;
+        }
+
         .button:hover {
             color: black;
         }
@@ -174,17 +184,17 @@
         .content-header {
             font-weight: 1000 !important;
         }
-
-        </style>
-        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
+    <script src="assets/chartjs-plugin-dragdata.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-md fw-semibold fixed-top text-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">GeoPresensi</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -206,7 +216,7 @@
                     </li>
 
 
-                    
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             List Data
@@ -226,9 +236,11 @@
                             <a class="dropdown-item" href="{{ url('dashboard/gurupiket/presensi') }}">Data presensi</a>
                         </div>
                         @elseif (Auth::check() && Auth::user()->role == 'gurubk')
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ url('dashboard/gurubk/kelas') }}">Data Kelas</a>
                             <a class="dropdown-item" href="{{ url('dashboard/gurubk/siswa') }}">Data Siswa</a>
                             <a class="dropdown-item" href="{{ url('dashboard/gurubk/presensi') }}">Data presensi</a>
+                        </div>
                         @elseif (Auth::check() && Auth::user()->role == 'pengurus')
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ url('dashboard/pengurus/siswa') }}">Data Siswa</a>
@@ -244,27 +256,31 @@
                         </div>
                         @endif
                     </li>
-                    
-                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
+
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha' || Auth::check() && Auth::user()->role == 'gurubk')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('dashboard/logs') }}">Log Activity</a>
                     </li>
-                    
+
 
                     @endif
-                    
+
                 </ul>
 
                 @if (Auth::check() && Auth::user()->role == 'tatausaha')
                 <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
-                <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
+                    <a href="{{ url('/logout') }}" class="dropdown-item">Logout</a>
                 </ul>
                 @endif
                 @if (Auth::check() && Auth::user()->role != 'tatausaha')
                 <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
+                            @if (Auth::check() && Auth::user()->role == 'pengurus' || Auth::check() && Auth::user()->role == 'siswa')
+                            <img src="{{ url('foto') . '/' . $foto_profil->foto_siswa }}" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
+                            @else
+                            <img src="{{ url('foto') . '/' . $foto_profil->foto_guru }}" class="rounded-circle" height="42" alt="" width="42" loading="lazy" />
+                            @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-left h-1" aria-labelledby="navbarDropdown">
                             @if (Auth::check() && Auth::user()->role == 'siswa')

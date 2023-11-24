@@ -53,8 +53,9 @@
                         </div>
                     </div>
                     <div class="col-md-4 mt-3">
-                        <button type="submit" class="btn btn-primary">SIMPAN</button>
-                        <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                        <button type="submit" class="btn btn-sm button btnSimpan">SIMPAN</button>
+                        <span style="width: 10px;"></span>
+                        <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail">KEMBALI</a>
                     </div>
                 </form>
             </div>

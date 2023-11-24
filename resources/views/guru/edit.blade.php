@@ -13,17 +13,7 @@
                     <form method="POST" action="simpan" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-5">
-                                <div class="form-group">
-                                    <label>Id Akun</label>
-                                    <select name="id_jenis_surat" class="form-control">
-                                        @foreach ($id_user as $us)
-                                            <option value="{{ $us->id_user }}"
-                                                {{ $us->id_user == $guru->id_user ? 'selected' : '' }}>
-                                                {{ $us->username }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label>Nama Guru</label>
                                     <input type="text" class="form-control" name="nama_guru"

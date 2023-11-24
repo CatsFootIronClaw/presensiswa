@@ -1,6 +1,21 @@
 @extends('layout.layout')
 @section('title', 'Edit pengurus')
 @section('content')
+<style>
+    .card-header .h1 {
+        font-weight: 600;
+        opacity: 60%;
+    }
+
+    .form-control {
+        opacity: 80%;
+    }
+
+    label {
+        font-weight: 700;
+        font-size: medium;
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -13,7 +28,7 @@
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label  for="nama_siswa">Nama Siswa</label>
+                                <label for="nama_siswa">Nama Siswa</label>
                                 <input type="text" class="form-control" name="nama_siswa" disabled value="{{ $pengurus->nama_siswa }}" id="nama_siswa">
                             </div>
                             <br>
@@ -38,8 +53,8 @@
                         </div>
                     </div>
                     <div class="col-md-4 mt-3">
-                        <button type="submit" class="btn btn-primary">SIMPAN</button>
-                        <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                        <button type="submit" class="btn btn-sm button btnSimpan">SIMPAN</button>
+                        <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail">KEMBALI</a>
                     </div>
                 </form>
             </div>

@@ -30,7 +30,7 @@
                                 @endif
                                 @if (Auth::check() && Auth::user()->role == 'siswa' || Auth::check() && Auth::user()->role == 'pengurus')
                                 <label>Siswa</label>
-                                <input type="text" class="form-control" disabled value="{{$siswa[0]->nama_siswa}}">
+                                <input type="text" class="form-control" disabled value="{{ $siswa[0]->nama_siswa }}">
                                 <select hidden name="nis" class="form-control">
                                     @foreach ($siswa as $s)
                                     <option value="{{ $s->nis }}">{{ $s->nama_siswa }}

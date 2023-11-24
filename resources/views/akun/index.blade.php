@@ -19,7 +19,7 @@
     <table class="bootstrap-table table table-bordered DataTable">
         <thead>
             <tr>
-                <th scope="col" class="thead">Nama</th>
+                <th scope="col" class="thead">Username</th>
                 <th scope="col" class="thead">Role</th>
                 <th scope="col" class="thead">Aksi</th>
             </tr>

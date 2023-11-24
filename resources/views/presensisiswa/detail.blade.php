@@ -36,7 +36,7 @@
                                             <td>: {{$detail[0]->nama_kelas}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bolder">Tanggal</td>
+                                            <td class="fw-bolder">Tanggal Presensi</td>
                                             <td>: {{$detail[0]->tanggal_presensi}}</td>
                                         </tr>
                                         <tr>
@@ -62,7 +62,7 @@
                                     </tbody>
                                 </table>
                                 <div class="col-md-4 mt-3">
-                                    <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                                    <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail">KEMBALI</a>
                                 </div>
                             </div>
 

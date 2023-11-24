@@ -43,7 +43,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="fw-bolder col1">Username</td>
-                                        <td class="fw-bolder col1">nama guru</td>
+                                        <td class="fw-bolder col1">Nama guru</td>
                                         @if (Auth::check() && Auth::user()->role == 'walikelas')
                                         <td class="fw-bolder col1">Mengurus kelas</td>
                                         @endif
@@ -61,7 +61,7 @@
                         </div>
                         <div class="p-2 d-flex justify-content-center">
                             <div class="col-md-4 mt-3 d-flex justify-content-center">
-                                <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                                <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail">KEMBALI</a>
                             </div>
                         </div>
 

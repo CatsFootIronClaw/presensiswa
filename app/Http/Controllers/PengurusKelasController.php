@@ -15,16 +15,20 @@ use Illuminate\Support\Facades\Auth;
 
 class PengurusKelasController extends Controller
 {
-    public function createPresensi(Siswa $siswa)
+    public function createPresensi(Siswa $siswa, tbl_user $tbl_user)
     {
 
         $auth = Auth::user()->id_user;
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth)->get();
 
         $siswa = $siswa
             ->join('tbl_user', 'siswa.id_user', '=', 'tbl_user.id_user')
             ->where('siswa.id_user', $auth)->get();
         $data = [
-            'siswa' => $siswa
+            'siswa' => $siswa,
+            'foto_profil' => $fotoprofil[0]
         ];
         return view('presensisiswa.tambah', $data);
     }
@@ -58,12 +62,16 @@ class PengurusKelasController extends Controller
     public function profilSiswa(Tbl_user $tbl_user)
     {
         $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth->id_user)->get();
 
         $data = [
             'akun' => $tbl_user
                 ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
                 ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
-                ->where('siswa.id_user', $auth->id_user)->get()
+                ->where('siswa.id_user', $auth->id_user)->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);
@@ -73,6 +81,10 @@ class PengurusKelasController extends Controller
     public function indexSiswa(tbl_user $tbl_user, Siswa $siswa, PengurusKelas $pengurus)
     {
         $totalsiswa = DB::select('SELECT CountSiswa() AS TotalSiswa');
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth->id_user)->get();
 
         $ambildataakun = $siswa
         ->join('kelas', 'kelas.id_kelas', '=', 'siswa.id_kelas')
@@ -89,6 +101,7 @@ class PengurusKelasController extends Controller
 
             'siswa' => $tampilkan_siswa,
             'jumlah_siswa' => $totalsiswa[0]->TotalSiswa,
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);   //
@@ -97,19 +110,28 @@ class PengurusKelasController extends Controller
         return view('siswa.index', $data);
     }
 
-    public function detailSiswa(Request $request, Siswa $siswa)
+    public function detailSiswa(Request $request, Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth->id_user)->get();
         $data = [
             'detail' => $siswa->where('nis', $request->id)
-                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('siswa.detail', $data);
     }
 
 
-    public function indexPresensiSiswa(PresensiSiswa $presensi, Siswa $siswa)
+    public function indexPresensiSiswa(PresensiSiswa $presensi, Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth->id_user)->get();
         $ambildataakun = $siswa
         ->join('kelas', 'kelas.id_kelas', '=', 'siswa.id_kelas')
         ->where('siswa.id_user', Auth::user()->id_user)->get();
@@ -119,7 +141,8 @@ class PengurusKelasController extends Controller
             ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)->get();
 
         $data = [
-            'presensi' => $tampilkan_presensi
+            'presensi' => $tampilkan_presensi,
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);

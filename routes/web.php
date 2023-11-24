@@ -65,11 +65,17 @@ Route::get('/home', function () {
                 });
                 Route::get('/kelas', [WaliKelasController::class, 'indexKelas']);
                 Route::get('/kelas/detail/{id}', [WaliKelasController::class, 'detailKelas']);
-                Route::get('/presensi', [WaliKelasController::class, 'indexPresensiSiswa']);
-                Route::get('/presensi/edit/{id}', [WaliKelasController::class, 'editPresensi']);
-                Route::post('/presensi/edit/simpan', [WaliKelasController::class, 'updatePresensi']);
-                Route::get('/presensi/detail/{id}', [WaliKelasController::class, 'detailPresensi']);
-                Route::get('/presensi/unduh', [WaliKelasController::class, 'unduhPresensi']);
+                Route::get('/tambah', [GuruPiketController::class, 'createPresensi']);
+                Route::prefix('presensi')->group(function () {
+                    Route::get('/', [WaliKelasController::class, 'indexPresensiSiswa']);
+                    Route::get('/tambah', [WaliKelasController::class, 'createPresensi']);
+                    Route::post('/simpan', [WaliKelasController::class, 'storePresensi']);
+                    Route::get('/edit/{id}', [WaliKelasController::class, 'editPresensi']);
+                    Route::post('/edit/simpan', [WaliKelasController::class, 'updatePresensi']);
+                    Route::get('/detail/{id}', [WaliKelasController::class, 'detailPresensi']);
+                    Route::get('/unduh', [WaliKelasController::class, 'unduhPresensi']);
+                });
+                
             });
             
         });
@@ -111,7 +117,7 @@ Route::get('/home', function () {
                     Route::get('/detail/{id}', [GuruBkController::class, 'detailSiswa']);
                 });
                 Route::prefix('/presensi')->group(function () {
-                    Route::get('/', [GuruPiketController::class, 'indexPresensi']);
+                    Route::get('/', [GuruBkController::class, 'indexPresensi']);
                     Route::get('/detail/{id}', [GuruBkController::class, 'detailPresensi']);
                     Route::get('/unduh', [GuruBkController::class, 'unduhPresensi']);
                 });
@@ -155,13 +161,13 @@ Route::get('/home', function () {
         Route::prefix('/tatausaha')->group(function () {
             Route::get('/', [DashboardController::class, 'jumlahData']);
             Route::prefix('siswa')->group(function () {
-                Route::get('/', [WaliKelasController::class, 'indexSiswa']);
+                Route::get('/', [TataUsahaController::class, 'indexSiswa']);
                 Route::get('/tambah', [TataUsahaController::class, 'createSiswa']);
                 Route::post('/simpan', [TataUsahaController::class, 'storeSiswa']);
                 Route::delete('/hapus', [TataUsahaController::class, 'destroySiswa']);
-                Route::get('/edit/{id}', [WaliKelasController::class, 'editSiswa']);
+                Route::get('/edit/{id}', [TataUsahaController::class, 'editSiswa']);
                 Route::post('/edit/simpan', [TataUsahaController::class, 'updateSiswa']);
-                Route::get('/detail/{id}', [WaliKelasController::class, 'detailSiswa']);
+                Route::get('/detail/{id}', [TataUsahaController::class, 'detailSiswa']);
             });
             Route::prefix('/kelas')->group(function () {
                 Route::get('/', [TataUsahaController::class, 'indexKelas']);

@@ -49,7 +49,7 @@
                                     </tbody>
                                 </table>
                                 <div class="col-md-4 mt-3">
-                                    <a href="#" onclick="window.history.back();" class="btn btn-success">KEMBALI</a>
+                                    <a href="#" onclick="window.history.back();" class="btn btn-sm button btnDetail">KEMBALI</a>
                                 </div>
                             </div>
 

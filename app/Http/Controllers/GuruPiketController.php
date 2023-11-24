@@ -17,11 +17,15 @@ class GuruPiketController extends Controller
     public function profilGuru(Tbl_user $tbl_user)
     {
         $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
 
         $data = [
             'akun' => $tbl_user
                 ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
-                ->where('guru.id_user', $auth->id_user)->get()
+                ->where('guru.id_user', $auth->id_user)->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);
@@ -29,36 +33,56 @@ class GuruPiketController extends Controller
     }
 
 
-    public function indexSiswa(Siswa $siswa)
+    public function indexSiswa(Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
-            'siswa' => $siswa->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+            'siswa' => $siswa->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         return view('siswa.index', $data);
     }
 
-    public function indexKelas(Kelas $kelas)
+    public function indexKelas(Kelas $kelas, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'kelas' => $kelas
             ->join('wali_kelas', 'kelas.id_walas', '=', 'wali_kelas.id_walas')
-            ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')->get()    
+            ->join('guru', 'wali_kelas.id_guru', '=', 'guru.id_guru')->get()   ,
+            'foto_profil' => $fotoprofil[0] 
         ];
         return view('kelas.index', $data);
     }
 
-    public function indexPresensi()
+    public function indexPresensi(tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
-            'presensi' => DB::table('view_presensi')->get()
+            'presensi' => DB::table('view_presensi')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         return view('presensisiswa.index', $data);
     }
 
-    public function createPresensi(Siswa $siswa)
+    public function createPresensi(Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
-            'siswa' => $siswa->all()
+            'siswa' => $siswa->all(),
+            'foto_profil' => $fotoprofil[0]
         ];
         return view('presensisiswa.tambah', $data);
     }
@@ -89,38 +113,54 @@ class GuruPiketController extends Controller
             return back()->with('error', 'Data presensi gagal ditambahkan');
         }
     }
-    public function detailKelas(Request $request, Kelas $kelas)
+
+
+    public function detailKelas(Request $request, Kelas $kelas, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $detailkelas = DB::table('view_kelas')->where('id_kelas', $request->id)->get();
         $jumlahsiswa = DB::table('kelas')->select(DB::raw('COUNT(*) as JumlahSiswa'))
         ->join('siswa', 'siswa.id_kelas', '=', 'kelas.id_kelas')
         ->where('siswa.id_kelas', $request->id)->get();
         $data = [
             'detail' => $detailkelas,
-                // ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
-            'jumlahsiswa' => $jumlahsiswa[0]->JumlahSiswa
+            'jumlahsiswa' => $jumlahsiswa[0]->JumlahSiswa,
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('Kelas.detail', $data);
     }
 
 
-    public function detailPresensi(Request $request, PresensiSiswa $presensi)
+    public function detailPresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'detail' => $presensi->where('id_presensi', $request->id)
                 ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
-                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('presensisiswa.detail', $data);
     }
 
-    public function editPresensi(Request $request, PresensiSiswa $presensi)
+    public function editPresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'presensi' => $presensi->where('id_presensi', $request->id)
-                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')->get()
+                ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('presensisiswa.edit', $data);
@@ -178,11 +218,16 @@ class GuruPiketController extends Controller
 
         return response()->json($pesan);
     }
-    public function detailSiswa(Request $request, Siswa $siswa)
+    public function detailSiswa(Request $request, Siswa $siswa, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
         $data = [
             'detail' => $siswa->where('nis', $request->id)
-                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('siswa.detail', $data);

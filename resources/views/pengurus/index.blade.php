@@ -1,7 +1,12 @@
 @extends('layout.layout')
 @section('title', 'Daftar pengurus')
 @section('content')
-
+<style>
+    .bootstrap-table {
+        
+        margin-top: 50px;
+    }
+</style>
 <div class="container">
     <h1 class="content-header content-header">Daftar Pengurus</h1>
     <div class="col-md-2">

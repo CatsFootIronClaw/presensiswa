@@ -57,6 +57,7 @@ return new class extends Migration
         p.nis AS nis,
         s.id_kelas AS id_kelas,
         s.nama_siswa AS nama_siswa,
+        k.nama_kelas AS nama_kelas,
         p.tanggal_presensi AS tanggal_presensi,
         p.status_hadir AS status_hadir,
         p.waktu_presensi AS waktu_presensi,
@@ -89,7 +90,8 @@ return new class extends Migration
             guru.id_guru AS id_guru,
             guru.foto_guru AS foto_guru,
             tbl_user.id_user AS id_user,
-            tbl_user.username AS nama_guru
+            guru.nama_guru AS nama_guru,
+            tbl_user.username AS username
         FROM guru
         JOIN tbl_user ON guru.id_user = tbl_user.id_user
         ORDER BY guru.id_guru ASC;

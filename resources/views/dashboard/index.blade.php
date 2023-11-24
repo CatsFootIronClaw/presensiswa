@@ -36,7 +36,7 @@
                     </a>
                     <h1 class="fw-bold">{{ $jumlah_siswa_per_kelas }}</h1>
                 </div>
-                <img src="{{ asset('img/group.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/jumlah siswa.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
 
@@ -61,7 +61,7 @@
 
                     <h1 class="fw-bold">{{ $jumlah_pengurus_per_kelas }}</h1>
                 </div>
-                <img src="{{ asset('img/Senior_high_school_students.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/Senior_high_school_students.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto; opacity: 60%">
             </div>
         </div>
 
@@ -74,7 +74,7 @@
 
                     <h1 class="fw-bold">{{ $jumlah_presensi_per_kelas }}</h1>
                 </div>
-                <img src="{{ asset('img/teacher.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/presensi.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
 
@@ -91,7 +91,7 @@
 
                     <h1 class="fw-bold">{{ $jumlah_siswa }}</h1>
                 </div>
-                <img src="{{ asset('img/teacher.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/jumlah siswa.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
         <div class="col-md-4">
@@ -128,25 +128,25 @@
                     </a>
                     <h1 class="fw-bold">{{ $jumlah_siswa }}</h1>
                 </div>
-                <img src="{{ asset('img/group.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/jumlah siswa.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
         <div class="col-md-4">
             <div class="card text-center bg-white">
                 <div class="card-body">
                     <h3 class="card-title">JUMLAH GURU</h3>
-                    <h1 class="fw-bold">721</h1>
+                    <h1 class="fw-bold">{{ $jumlah_guru }}</h1>
                 </div>
-                <img src="{{ asset('img/kelas3.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/jumlah guru.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
         <div class="col-md-4">
             <div class="card text-center bg-white">
                 <div class="card-body">
                     <h3 class="card-title">JUMLAH KELAS</h3>
-                    <h1 class="fw-bold">721</h1>
+                    <h1 class="fw-bold">{{ $jumlah_kelas }}</h1>
                 </div>
-                <img src="{{ asset('img/kelas3.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
+                <img src="{{ asset('img/kelas.png') }}" class="card-img-top" alt="Card Image" style="max-width: 100px; max-height: 100px; margin: 0 auto;">
             </div>
         </div>
 

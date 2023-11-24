@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function JumlahData(Tbl_user $tbl_user, Siswa $siswa)
+    public function jumlahData(Tbl_user $tbl_user, Siswa $siswa)
     {
 
         $auth = Auth::user()->id_user;
@@ -41,21 +41,34 @@ class DashboardController extends Controller
         $akun = $tbl_user
             ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
             ->where('guru.id_user', $auth->id_user)->get();
+        $totalguru = DB::table('guru')->select(DB::raw('COUNT(*) as TotalGuru'))->get();
+        $totalkelas = DB::table('kelas')->select(DB::raw('COUNT(*) as TotalKelas'))->get();
 
 
-        if(Auth::check() && Auth::user()->role != 'tatausaha' && Auth::check() && Auth::user()->role != 'gurupiket' && Auth::user()->role != 'gurubk') {
-        $ambildataakun = $siswa
-        ->join('kelas', 'kelas.id_kelas', '=', 'siswa.id_kelas')
-        ->join('tbl_user', 'siswa.id_user', '=', 'tbl_user.id_user')
-        ->where('tbl_user.id_user', Auth::user()->id_user)->get();
-        $totalsiswaperkelaspengurus = DB::table('siswa')->select(DB::raw('COUNT(*) as TotalSiswaPerKelas'))
-        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
-        ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)
-        ->get();
-        $totalpresensiperkelaspengurus = DB::table('presensi_siswa')->select(DB::raw('COUNT(*) as TotalPresensiPerKelas'))
-        ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
-        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
-        ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)->get();
+        if(Auth::check() && Auth::user()->role == 'pengurus') {
+            $ambildataakun = $siswa
+            ->join('kelas', 'kelas.id_kelas', '=', 'siswa.id_kelas')
+            ->join('tbl_user', 'siswa.id_user', '=', 'tbl_user.id_user')
+            ->where('tbl_user.id_user', Auth::user()->id_user)->get();
+            $totalsiswaperkelaspengurus = DB::table('siswa')->select(DB::raw('COUNT(*) as TotalSiswaPerKelas'))
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)
+            ->get();
+            $totalpresensiperkelaspengurus = DB::table('presensi_siswa')->select(DB::raw('COUNT(*) as TotalPresensiPerKelas'))
+            ->join('siswa', 'siswa.nis', '=', 'presensi_siswa.nis')
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->where('kelas.id_kelas', $ambildataakun[0]->id_kelas)->get();
+        }
+
+        if (Auth::check() && Auth::user()->role == 'pengurus' || Auth::check() && Auth::user()->role == 'siswa') {
+            $fotoprofil = $tbl_user
+                ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+                ->where('siswa.id_user', $auth->id_user)->get();
+        } else {
+            $fotoprofil = $tbl_user
+                ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+                ->where('guru.id_user', $auth->id_user)->get();
+            
         }
 
         // array untuk menangkap data siswa dari view dan 
@@ -67,25 +80,29 @@ class DashboardController extends Controller
             'jumlah_siswa_per_kelas' => $totalsiswaperkelas[0]->TotalSiswaPerKelas,
             'jumlah_presensi_per_kelas' => $totalpresensiperkelas[0]->TotalPresensiPerKelas,
             'jumlah_pengurus_per_kelas' => $totalpengurusperkelas[0]->TotalPengurusPerKelas,
-            'akun' => $akun
+            'akun' => $akun,
+            'jumlah_guru' => $totalguru[0]->TotalGuru,
+            'jumlah_kelas' => $totalkelas[0]->TotalKelas
+            
         
         ];
-
-        if(Auth::check() && Auth::user()->role != 'tatausaha' && Auth::check() && Auth::user()->role != 'gurupiket' && Auth::user()->role != 'gurubk') {
+        
+        if(Auth::check() && Auth::user()->role == 'pengurus') {
             $data2 = [
                 'jumlah_siswa_per_kelas_pengurus' => $totalsiswaperkelaspengurus[0]->TotalSiswaPerKelas,
-                'jumlah_presensi_per_kelas_pengurus' => $totalpresensiperkelaspengurus[0]->TotalPresensiPerKelas
+                'jumlah_presensi_per_kelas_pengurus' => $totalpresensiperkelaspengurus[0]->TotalPresensiPerKelas,
+                'foto_profil' => $fotoprofil[0]
             ];
-        };
-
-        if(Auth::check() && Auth::user()->role != 'tatausaha' && Auth::check() && Auth::user()->role != 'gurupiket' && Auth::user()->role != 'gurubk') {
-        return view('dashboard.index', $data, $data2);
-        }else{
-            return view('dashboard.index', $data);
+        }elseif (Auth::check() && Auth::user()->role != 'tatausaha') {
+            $data2 = [
+                'foto_profil' => $fotoprofil[0]
+            ];
         }
+        
+        return view('dashboard.index', $data, $data2);
     }
     
-};
+}
 
 // public function index(Guru $guru){
 //         $data = [

@@ -104,6 +104,110 @@ return new class extends Migration
         END
         ');
 
+
+
+
+
+        DB::unprepared('
+        CREATE TRIGGER add_kelas
+        BEFORE INSERT ON kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("kelas", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_kelas
+        AFTER UPDATE ON kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("kelas", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_kelas
+        AFTER DELETE ON kelas
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("kelas", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
+
+
+
+
+        DB::unprepared('
+        CREATE TRIGGER add_guru
+        BEFORE INSERT ON guru
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("guru", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_guru
+        AFTER UPDATE ON guru
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("guru", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_guru
+        AFTER DELETE ON guru
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("guru", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
+
+
+
+
+
+
+        DB::unprepared('
+        CREATE TRIGGER add_akun
+        BEFORE INSERT ON tbl_user
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("akun", CURDATE(), CURTIME(), "Tambah", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER update_akun
+        AFTER UPDATE ON tbl_user
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("akun", CURDATE(), CURTIME(), "Update", "Sukses");
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_akun
+        AFTER DELETE ON tbl_user
+        FOR EACH ROW
+        BEGIN
+            INSERT logs(tabel, tanggal, jam, aksi, record)
+            VALUES ("akun", CURDATE(), CURTIME(), "Hapus", "Sukses");
+        END
+        ');
+
         
     }
 

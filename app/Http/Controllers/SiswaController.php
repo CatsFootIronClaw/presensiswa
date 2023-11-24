@@ -15,16 +15,20 @@ use Illuminate\Support\Facades\DB;
 class SiswaController extends Controller
 {
     //
-    public function createPresensi(Siswa $siswa)
+    public function createPresensi(Siswa $siswa, tbl_user $tbl_user)
     {
 
         $auth = Auth::user()->id_user;
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth)->get();
 
-        $siswa = $siswa
+        $siswaa = $siswa
         ->join('tbl_user', 'siswa.id_user', '=', 'tbl_user.id_user')
         ->where('siswa.id_user', $auth)->get();
         $data = [
-            'siswa' => $siswa
+            'siswa' => $siswaa,
+            'foto_profil' => $fotoprofil[0]
         ];
         return view('presensisiswa.tambah', $data);
     }
@@ -58,12 +62,16 @@ class SiswaController extends Controller
     public function profilSiswa(Tbl_user $tbl_user)
     {
         $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth->id_user)->get();
 
         $data = [
             'akun' => $tbl_user
                 ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
                 ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
-                ->where('siswa.id_user', $auth->id_user)->get()
+                ->where('siswa.id_user', $auth->id_user)->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
 
         // dd($data);
