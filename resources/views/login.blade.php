@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     @vite(['resources/sass/app.scss','resources/js/app.js'])
     <style>
@@ -15,44 +16,58 @@
             padding: 10px;
         }
 
-        body{
+        body {
             background-color: #80B3FF;
         }
-        .card{
+
+        .card {
             padding: 25px 0;
         }
-        .cuy{
+
+        .cuy {
             margin: auto;
         }
-        .nih{
+
+        .nih {
             margin: auto;
         }
-        .logsy{
+
+        .logsy {
             text-align: center;
             padding-bottom: 30px;
         }
-        .label{
+
+        .label {
             padding-bottom: 5px;
         }
+
         .cet {
             padding-top: 10px;
             padding-bottom: 10px;
         }
+
         .gambar {
             padding: 0px 20px;
         }
-       img{
-        display: block;
-        margin: 20px auto; 
-       } 
+
+        img {
+            display: block;
+            margin: 20px auto;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container ">
         <div class="row">
             <div class="col-lg-12">
                 <div class="col-lg-4 tengah">
+                    @if ($message = Session::get('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ $message }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
                     <form method="POST">
                         <div class="card bg-white">
                             <div class="container cuy">
@@ -86,22 +101,22 @@
 </body>
 <footer>
     <script type='module'>
-        $('.btnLogin').on('click', function(a){
+        $('.btnLogin').on('click', function(a) {
             axios.post('auth/check', {
-                username : $('#userName').val(),
-                password : $('#passWord').val(),
-                _token : '{{csrf_token()}}'
-            }).then(function(response){
+                username: $('#userName').val(),
+                password: $('#passWord').val(),
+                _token: '{{csrf_token()}}'
+            }).then(function(response) {
 
-                if(response.data.success){
-                    window.location.href = response.data.redirect_url;   
-                }else{
+                if (response.data.success) {
+                    window.location.href = response.data.redirect_url;
+                } else {
                     swal.fire('Gagal login, username atau password salah', '', 'error');
                 }
-            }).catch(function(error){
-                if(error.response.status === 422){
+            }).catch(function(error) {
+                if (error.response.status === 422) {
                     swal.fire(error.response.data.message, '', 'error')
-                }else{
+                } else {
                     swal.fire('gagal login, username/password salah')
                 }
             });

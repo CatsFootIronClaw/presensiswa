@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\Logs;
 use App\Models\PresensiSiswa;
 use App\Models\tbl_user;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -139,5 +140,20 @@ class GuruBkController extends Controller
             'foto_profil' => $fotoprofil[0]
         ];
         return view('kelas.index', $data);
+    }
+
+    public function indexLogs(Logs $logs, tbl_user $tbl_user)
+    {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
+
+        $data = [
+            'logsy' => $logs::orderBy('id_log', 'desc')->get(),
+            'foto_profil' => $fotoprofil[0]
+        ];
+
+        return view('logs.index', $data);
     }
 }

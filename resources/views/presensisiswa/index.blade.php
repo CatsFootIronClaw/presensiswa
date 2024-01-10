@@ -72,7 +72,6 @@
         </tbody>
     </table>
 </div>
-<canvas id="chartJSContainer" style="width: 50%;"></canvas>
 @endsection
 
 @section('footer')

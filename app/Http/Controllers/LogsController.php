@@ -13,13 +13,9 @@ class LogsController extends Controller
     //
     public function index(Logs $logs, tbl_user $tbl_user)
     {
-        $auth = Auth::user();
-        $fotoprofil = $tbl_user
-            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
-            ->where('guru.id_user', $auth->id_user)->get();
+        
         $data = [
-            'logsy' => $logs::orderBy('id_log', 'desc')->get(),
-            'foto_profil' => $fotoprofil[0]
+            'logsy' => $logs::orderBy('id_log', 'desc')->get()
         ];
 
         return view('logs.index', $data);

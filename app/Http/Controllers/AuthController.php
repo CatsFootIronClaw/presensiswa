@@ -44,9 +44,11 @@ class AuthController extends Controller
             } elseif ($user->role == 'pengurus') {
                 return redirect('dashboard/pengurus');
             }   
+        } else {
+
+            return redirect()->back()->with('error', 'Terdapat Kesalahan Pada Username atau Password');
         }
 
-        return redirect()->back()->withErrors('Terdapat Kesalahan Pada Username atau Password')->withInput();
     }
 
     function logout(){

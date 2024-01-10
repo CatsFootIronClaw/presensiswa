@@ -117,7 +117,7 @@ Route::get('/home', function () {
                 Route::get('/profil', [GuruBkController::class, 'profilGuru']);
                 Route::get('/kelas', [GuruBkController::class, 'indexKelas']);
                 Route::get('/kelas/detail/{id}', [GuruBkController::class, 'detailKelas']);
-
+                Route::get('/logs', [GuruBkController::class, 'indexLogs']);
                 Route::prefix('siswa')->group(function () {
                     Route::get('/', [GuruBkController::class, 'indexSiswa']);
                     Route::get('/detail/{id}', [GuruBkController::class, 'detailSiswa']);

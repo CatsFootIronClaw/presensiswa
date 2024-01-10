@@ -257,12 +257,14 @@
                         @endif
                     </li>
 
-                    @if (Auth::check() && Auth::user()->role == 'tatausaha' || Auth::check() && Auth::user()->role == 'gurubk')
+                    @if (Auth::check() && Auth::user()->role == 'tatausaha')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('dashboard/logs') }}">Log Activity</a>
                     </li>
-
-
+                    @elseif(Auth::check() && Auth::user()->role == 'gurubk')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('dashboard/gurubk/logs') }}">Log Activity</a>
+                    </li>
                     @endif
 
                 </ul>

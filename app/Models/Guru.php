@@ -37,15 +37,6 @@ class Guru extends Model
     {
         return tbl_user::find($this->attributes['id_user'])->username;
     }
-
-    // public function user()
-    // {
-    //     return $this->belongsTo(tbl_user::class);
-    // }
-    // public function getUserAttribute()
-    // {
-    //     return tbl_user::find($this->attributes['id_user'])->tbl_user;
-    // }
 }
 
 
