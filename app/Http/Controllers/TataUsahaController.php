@@ -533,6 +533,20 @@ class TataUsahaController extends Controller
         return view('siswa.index', $data);
     }
 
+    public function detailSiswa(Request $request, Siswa $siswa, tbl_user $tbl_user)
+    {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('guru', 'tbl_user.id_user', '=', 'guru.id_user')
+            ->where('guru.id_user', $auth->id_user)->get();
+        $data = [
+            'detail' => $siswa->where('nis', $request->id)
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+        ];
+        // dd($data);
+        return view('siswa.detail', $data);
+    }
+
     public function editSiswa(Request $request, Siswa $siswa, Kelas $kelas, tbl_user $tbl_user)
     {
         $data = [

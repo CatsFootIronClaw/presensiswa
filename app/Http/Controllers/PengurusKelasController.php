@@ -150,12 +150,17 @@ class PengurusKelasController extends Controller
         return view('presensisiswa.index', $data);
     }
 
-    public function detailPresensi(Request $request, PresensiSiswa $presensi)
+    public function detailPresensi(Request $request, PresensiSiswa $presensi, tbl_user $tbl_user)
     {
+        $auth = Auth::user();
+        $fotoprofil = $tbl_user
+            ->join('siswa', 'tbl_user.id_user', '=', 'siswa.id_user')
+            ->where('siswa.id_user', $auth->id_user)->get();
         $data = [
             'detail' => $presensi->where('id_presensi', $request->id)
                 ->join('siswa', 'presensi_siswa.nis', '=', 'siswa.nis')
-                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get()
+                ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')->get(),
+            'foto_profil' => $fotoprofil[0]
         ];
         // dd($data);
         return view('presensisiswa.detail', $data);

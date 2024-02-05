@@ -21,27 +21,26 @@
                             <div class="form-group">
                                 @if (Auth::check() && Auth::user()->role != 'siswa' && Auth::check() && Auth::user()->role != 'pengurus' )
                                 <label>Nama Siswa</label>
-                                <select name="nis" class="form-control" required>
-                                    <option value="" hidden> -- pilih siswa --</option>
+                                <select name="nis" class="form-control" >
                                     @foreach ($siswa as $s)
+                                    <option value="" hidden> -- pilih siswa --</option>
                                     <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @endif
-                                @if (Auth::check() && Auth::user()->role == 'siswa' || Auth::check() && Auth::user()->role == 'pengurus')
-                                <label>Siswa</label>
-                                <input type="text" class="form-control" disabled value="{{ $siswa[0]->nama_siswa }}">
-                                <select hidden name="nis" class="form-control" required>
-                                    <option value="" hidden> -- pilih siswa --</option>
-                                    @foreach ($siswa as $s)
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @endif
+                                    @if (Auth::check() && Auth::user()->role == 'siswa' || Auth::check() && Auth::user()->role == 'pengurus')
+                                    <label>Siswa</label>
+                                    <input type="text" class="form-control" disabled value="{{ $siswa[0]->nama_siswa }}">
+                                    <select hidden name="nis" class="form-control" >
+                                        @foreach ($siswa as $s)
                                     <option value="{{ $s->nis }}">{{ $s->nama_siswa }}
                                     </option>
                                     @endforeach
                                 </select>
                                 @endif
                                 <label>Status</label>
-                                <select name="status_hadir" class="form-control" required>
+                                <select name="status_hadir" class="form-control" >
                                     <option value="" hidden> -- pilih status --</option>
                                     <option value="Hadir">Hadir</option>
                                     <option value="Izin">Izin</option>
@@ -50,7 +49,7 @@
                                     @endif
                                 </select>
                                 <label>Foto Bukti</label>
-                                <input type="file" class="form-control" name="foto_bukti" required />
+                                <input type="file" class="form-control" name="foto_bukti" />
                                 @csrf
                             </div>
                             <div class="col-md-9 mt-3">

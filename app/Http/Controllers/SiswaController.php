@@ -46,19 +46,21 @@ class SiswaController extends Controller
             $foto_file->move(public_path('foto'), $foto_nama);
             $data['foto_bukti'] = $foto_nama;
         } else {
-            return back()->with('error', 'File upload failed. Please select a valid file.');
+            // return back()->with('error', 'File upload failed. Please select a valid file.');
         }
-
+        
         $user = Auth::user();
-        $data['pembuat'] = $user->role;
-
+        
         $store = DB::statement("CALL CreatePresensi(?,?,?)", [$data['nis'], $data['status_hadir'], $data['foto_bukti']]);
         if ($store) {
             return redirect('dashboard/siswa');
         } else {
-            return back()->with('error', 'Data presensi gagal ditambahkan');
+            dd('oi tod');
+            // return back()->with('error', 'Data presensi gagal ditambahkan');
         }
     }
+
+
     public function profilSiswa(Tbl_user $tbl_user)
     {
         $auth = Auth::user();
