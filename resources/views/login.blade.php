@@ -73,7 +73,7 @@
                             <div class="container cuy">
                                 <div class="row">
                                     <div class="col-sm gambar">
-                                        <img src={{ asset('img/loginpict.png') }} alt="description of myimage" width="200">
+                                        <img src={{ asset('img/loginimg.png') }} alt="description of myimage" width="200">
                                     </div>
                                     <div class="col-sm nih">
                                         <div>

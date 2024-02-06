@@ -193,7 +193,7 @@
 <body>
     <nav class="navbar navbar-expand-md fw-semibold fixed-top text-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">GeoPresensi</a>
+            <a class="navbar-brand" href="#"><img src={{ asset('img/YukPresensi.png') }} alt="description of myimage" width="100"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

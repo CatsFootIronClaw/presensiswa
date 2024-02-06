@@ -74,6 +74,8 @@ return new class extends Migration
         END
         ');
 
+        
+
         DB::unprepared('
         CREATE TRIGGER add_presensi
         BEFORE INSERT ON presensi_siswa
